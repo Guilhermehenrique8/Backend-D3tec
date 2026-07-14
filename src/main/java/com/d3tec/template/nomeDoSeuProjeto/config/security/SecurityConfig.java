@@ -60,7 +60,9 @@ public class SecurityConfig {
                             HttpMethod.GET,
                             "/auth/verify-email",
                             "/services",
-                            "/services/**"
+                            "/services/**",
+                            "/cases",
+                            "/cases/**"
                     ).permitAll()
                     .requestMatchers(
                             "/v3/api-docs/**",
