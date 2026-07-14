@@ -17,11 +17,12 @@ public class SimpleEmailTemplateRenderer implements EmailTemplateRenderer {
     @Override
     public RenderedEmailTemplate render(EmailType emailType, Map<String, Object> model) {
         TemplateDefinition template = definitionFor(emailType);
+        String subject = renderContent(template.subject(), model);
         String htmlBody = renderTemplate(template.htmlPath(), model);
         String textBody = renderTemplate(template.textPath(), model);
 
         return RenderedEmailTemplate.builder()
-                .subject(template.subject())
+                .subject(subject)
                 .textBody(textBody)
                 .htmlBody(htmlBody)
                 .build();
@@ -39,11 +40,20 @@ public class SimpleEmailTemplateRenderer implements EmailTemplateRenderer {
                     "templates/email/password-reset.html",
                     "templates/email/password-reset.txt"
             );
+            case CONTACT_FORM -> new TemplateDefinition(
+                    "Novo contato pelo site da D3TEC — {{assunto}}",
+                    "templates/email/contact-notification.html",
+                    "templates/email/contact-notification.txt"
+            );
         };
     }
 
     private String renderTemplate(String templatePath, Map<String, Object> model) {
         String content = loadTemplate(templatePath);
+        return renderContent(content, model);
+    }
+
+    private String renderContent(String content, Map<String, Object> model) {
         String rendered = content;
 
         for (Map.Entry<String, Object> entry : model.entrySet()) {

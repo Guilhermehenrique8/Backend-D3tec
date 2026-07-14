@@ -1,0 +1,10 @@
+Novo contato recebido pelo site da {{appName}}
+
+Nome: {{nome}}
+E-mail: {{email}}
+Telefone: {{telefone}}
+Empresa/Instituição: {{empresa}}
+Assunto: {{assunto}}
+
+Mensagem:
+{{mensagem}}
