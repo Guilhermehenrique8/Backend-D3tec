@@ -6,6 +6,7 @@ import com.d3tec.template.nomeDoSeuProjeto.email.model.TransactionalEmail;
 import com.d3tec.template.nomeDoSeuProjeto.email.queue.EmailQueuePort;
 import com.d3tec.template.nomeDoSeuProjeto.email.template.EmailTemplateRenderer;
 import com.d3tec.template.nomeDoSeuProjeto.email.template.RenderedEmailTemplate;
+import com.d3tec.template.nomeDoSeuProjeto.entity.ContactMessage;
 import com.d3tec.template.nomeDoSeuProjeto.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,5 +64,21 @@ public class ApplicationEmailService {
                 .type(type)
                 .idempotencyKey(idempotencyKey)
                 .build());
+    }
+    public void sendContactNotification(ContactMessage message, String notificationEmail) {
+        queueTemplateEmail(
+                notificationEmail,
+                EmailType.CONTACT_FORM,
+                Map.of(
+                        "nome", message.getNome(),
+                        "email", message.getEmail(),
+                        "telefone", message.getTelefone() == null ? "-" : message.getTelefone(),
+                        "empresa", message.getEmpresa() == null ? "-" : message.getEmpresa(),
+                        "assunto", message.getAssunto(),
+                        "mensagem", message.getMensagem(),
+                        "appName", appName
+                ),
+                "contact:" + message.getId()
+        );
     }
 }
