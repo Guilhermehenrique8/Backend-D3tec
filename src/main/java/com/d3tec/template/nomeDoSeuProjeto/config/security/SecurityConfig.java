@@ -62,7 +62,9 @@ public class SecurityConfig {
                             "/services",
                             "/services/**",
                             "/cases",
-                            "/cases/**"
+                            "/cases/**",
+                            "/posts",
+                            "/posts/**"
                     ).permitAll()
                     .requestMatchers(
                             "/v3/api-docs/**",
