@@ -58,7 +58,13 @@ public class SecurityConfig {
                         ).permitAll()
                     .requestMatchers(
                             HttpMethod.GET,
-                            "/auth/verify-email"
+                            "/auth/verify-email",
+                            "/services",
+                            "/services/**",
+                            "/cases",
+                            "/cases/**",
+                            "/posts",
+                            "/posts/**"
                     ).permitAll()
                     .requestMatchers(
                             "/v3/api-docs/**",
