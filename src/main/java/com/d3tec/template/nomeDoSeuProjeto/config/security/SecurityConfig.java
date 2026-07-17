@@ -71,6 +71,7 @@ public class SecurityConfig {
                             "/swagger-ui/**",
                             "/swagger-ui.html"
                     ).permitAll()
+                    .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                     .anyRequest().authenticated())
                 .oauth2ResourceServer(
                     oauth2 -> oauth2
