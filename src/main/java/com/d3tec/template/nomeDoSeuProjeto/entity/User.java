@@ -58,4 +58,7 @@ public class User implements Serializable {
 
     private LocalDateTime createdAt =  LocalDateTime.now();
     private LocalDateTime updatedAt;
+
+    @Column(name = "profile_picture_url", length = 500)
+    private String profilePictureUrl;
 }
