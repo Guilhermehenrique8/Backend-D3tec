@@ -138,13 +138,6 @@
             <version>3.5.4</version>
         </dependency>
 
-        <!-- Upload de imagens -->
-        <dependency>
-            <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary-http44</artifactId>
-            <version>1.39.0</version>
-        </dependency>
-
 		<!-- Testes -->
 
 		<dependency>
