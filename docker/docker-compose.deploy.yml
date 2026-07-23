@@ -3,8 +3,8 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: nome-do-seu-projeto:latest
-    container_name: nome-do-seu-projeto-app
+    image: d3tec:latest
+    container_name: d3tec-app
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -21,7 +21,7 @@ services:
       SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: ${SPRING_MAIL_SMTP_AUTH:-true}
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: ${SPRING_MAIL_SMTP_STARTTLS_ENABLE:-true}
-      APP_MAIL_FROM_NAME: ${APP_MAIL_FROM_NAME:-NomeDoSeuProjeto}
+      APP_MAIL_FROM_NAME: ${APP_MAIL_FROM_NAME:-D3TEC}
       APP_MAIL_FROM_ADDRESS: ${APP_MAIL_FROM_ADDRESS}
       APP_MAIL_BASE_URL: ${APP_MAIL_BASE_URL}
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-admin@admin.com}
@@ -34,7 +34,7 @@ services:
 
   postgres:
     image: postgres:17-alpine
-    container_name: nome-do-seu-projeto-postgres
+    container_name: d3tec-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-d3tec}
@@ -52,7 +52,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: nome-do-seu-projeto-redis
+    container_name: d3tec-redis
     restart: unless-stopped
     ports:
       - "6379:6379"

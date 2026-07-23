@@ -1,7 +1,7 @@
 services:
   redis:
     image: redis:7-alpine
-    container_name: nome-do-seu-projeto-redis-test
+    container_name: d3tec-redis-test
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -13,7 +13,7 @@ services:
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: nome-do-seu-projeto-mailpit
+    container_name: d3tec-mailpit
     restart: unless-stopped
     ports:
       - "1025:1025"
