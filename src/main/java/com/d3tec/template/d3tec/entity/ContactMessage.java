@@ -1,0 +1,54 @@
+package com.d3tec.template.d3tec.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "contact_message")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class ContactMessage implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(
+            sequenceName = "contact_message_seq_generator",
+            name = "contact_message_seq_generator",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "contact_message_seq_generator"
+    )
+    private Long id;
+
+    @Column(length = 150, nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(length = 30)
+    private String telefone;
+
+    @Column(length = 150)
+    private String empresa;
+
+    @Column(length = 150, nullable = false)
+    private String assunto;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String mensagem;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+}

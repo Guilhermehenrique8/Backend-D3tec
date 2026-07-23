@@ -1,0 +1,19 @@
+package com.d3tec.template.d3tec.email.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class TransactionalEmail {
+    String to;
+    String subject;
+    String htmlBody;
+    String textBody;
+    String idempotencyKey;
+    EmailType type;
+}
