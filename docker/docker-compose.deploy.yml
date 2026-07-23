@@ -3,8 +3,8 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: nome-do-seu-projeto:latest
-    container_name: nome-do-seu-projeto-app
+    image: d3tec:latest
+    container_name: d3tec-app
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -34,7 +34,7 @@ services:
 
   postgres:
     image: postgres:17-alpine
-    container_name: nome-do-seu-projeto-postgres
+    container_name: d3tec-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-d3tec}
@@ -52,7 +52,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: nome-do-seu-projeto-redis
+    container_name: d3tec-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
