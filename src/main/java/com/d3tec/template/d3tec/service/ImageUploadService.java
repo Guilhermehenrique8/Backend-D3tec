@@ -16,9 +16,6 @@ public class ImageUploadService {
     @Value("${storage.upload-dir:uploads}")
     private String uploadDir;
 
-    @Value("${server.servlet.context-path:}")
-    private String contextPath;
-
     public String upload(MultipartFile file) {
         try {
             Files.createDirectories(Paths.get(uploadDir));
@@ -33,7 +30,7 @@ public class ImageUploadService {
             Path targetPath = Paths.get(uploadDir, filename);
             file.transferTo(targetPath.toFile());
 
-            return contextPath + "/files/" + filename;
+            return "/files/" + filename;
         } catch (IOException e) {
             throw new IllegalStateException("Falha ao salvar imagem", e);
         }
