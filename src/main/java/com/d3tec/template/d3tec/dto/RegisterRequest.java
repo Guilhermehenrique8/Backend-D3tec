@@ -2,6 +2,7 @@ package com.d3tec.template.d3tec.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -14,5 +15,8 @@ public class RegisterRequest {
     @Schema(example = "senha123", description = "Senha do usuÃ¡rio", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
-    // TODO -> COLOQUE AQUI OS OUTROS ATRIBUTOS DO REGISTRO
+    @NotBlank
+    @Size(max = 150)
+    @Schema(example = "Maria Silva", description = "Nome do usuário", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String nome;
 }

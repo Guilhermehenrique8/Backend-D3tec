@@ -50,11 +50,16 @@ public class User implements Serializable {
     @JsonIgnore
     @Column(name = "mfa_enabled", nullable = false)
     private boolean mfaEnabled;
+    
     @JsonIgnore
     @Column(name = "secret", length = 512)
     private String secret;
+    
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified;
+
+    @Column(length = 150)
+    private String nome;
 
     private LocalDateTime createdAt =  LocalDateTime.now();
     private LocalDateTime updatedAt;

@@ -115,6 +115,7 @@ public class AuthService {
 
         User user = new User();
         user.setEmail(normalizedEmail);
+        user.setNome(registerRequest.getNome());
         user.setPassword(bCryptPasswordEncoder.encode(registerRequest.getPassword()));
         user.setRoles(Set.of(basicRole));
         user.setSecret(null);

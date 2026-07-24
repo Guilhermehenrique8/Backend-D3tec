@@ -1,5 +1,7 @@
 package com.d3tec.template.d3tec.entity;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,6 +54,9 @@ public class Post implements Serializable {
 
     @Column(length = 100)
     private String categoria;
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)

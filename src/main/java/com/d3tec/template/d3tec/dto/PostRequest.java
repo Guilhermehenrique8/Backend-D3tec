@@ -25,6 +25,5 @@ public class PostRequest {
     @NotBlank
     private String conteudo;
 
-    @Size(max = 100)
-    private String categoria;
+    private Long tagId;
 }
