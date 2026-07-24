@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class PostController {
     @GetMapping
     @Operation(summary = "Listar todos os posts publicados, do mais recente para o mais antigo")
     @SecurityRequirement(name = "")
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Post>> listAllPublished() {
         return ResponseEntity.ok(postRepository.findByExibirAoPublicoTrueOrderByDataPublicacaoDesc());
     }
@@ -32,6 +34,7 @@ public class PostController {
     @GetMapping("/{slug}")
     @Operation(summary = "Buscar um post publicado pelo slug (URL amigavel)")
     @SecurityRequirement(name = "")
+    @Transactional(readOnly = true)
     public ResponseEntity<Post> findBySlug(@PathVariable String slug) {
         return postRepository.findBySlugAndExibirAoPublicoTrue(slug)
                 .map(ResponseEntity::ok)

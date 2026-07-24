@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,14 @@ public class PostAdminController {
 
     @GetMapping
     @Operation(summary = "Listar todos os posts")
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Post>> listAll() {
         return ResponseEntity.ok(postRepository.findAll());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar um post pelo id")
+    @Transactional(readOnly = true)
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         return postRepository.findById(id)
                 .map(ResponseEntity::ok)
