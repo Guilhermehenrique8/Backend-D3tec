@@ -1,4 +1,4 @@
-package com.d3tec.template.d3tec.controller.auth;
+package com.d3tec.template.d3tec.controller;
 
 import com.d3tec.template.d3tec.service.ImageUploadService;
 import io.swagger.v3.oas.annotations.Operation;

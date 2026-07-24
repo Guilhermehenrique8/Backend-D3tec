@@ -1,9 +1,9 @@
-package com.d3tec.template.d3tec.controller.auth;
+package com.d3tec.template.d3tec.controller;
 
 import com.d3tec.template.d3tec.entity.Categoria;
 import com.d3tec.template.d3tec.repository.CategoriaRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,20 +15,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/categorias")
 @RequiredArgsConstructor
-@Tag(name = "Categorias (Admin)", description = "CRUD de categorias para posts")
-public class CategoriaAdminController {
+public class CategoriaController {
 
     private final CategoriaRepository categoriaRepository;
 
-    @GetMapping
+    /* Public */
+    @GetMapping("/categorias")
     @Operation(summary = "Listar todas as categorias")
+    @SecurityRequirement(name = "")
+    public ResponseEntity<List<Categoria>> listPublic() {
+        return ResponseEntity.ok(categoriaRepository.findAll());
+    }
+
+    /* Admin */
+    @GetMapping("/admin/categorias")
+    @Operation(summary = "Listar todas as categorias (admin)")
     public ResponseEntity<List<Categoria>> listAll() {
         return ResponseEntity.ok(categoriaRepository.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/categorias/{id}")
     @Operation(summary = "Buscar uma categoria por ID")
     public ResponseEntity<Categoria> findById(@PathVariable Long id) {
         return categoriaRepository.findById(id)
@@ -36,7 +43,7 @@ public class CategoriaAdminController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/admin/categorias")
     @Operation(summary = "Criar uma categoria")
     public ResponseEntity<Categoria> create(@RequestBody @Valid CategoriaRequest request) {
         Categoria categoria = new Categoria();
@@ -45,7 +52,7 @@ public class CategoriaAdminController {
         return ResponseEntity.ok(categoriaRepository.save(categoria));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/categorias/{id}")
     @Operation(summary = "Atualizar uma categoria")
     public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody @Valid CategoriaRequest request) {
         Categoria categoria = categoriaRepository.findById(id)
@@ -55,7 +62,7 @@ public class CategoriaAdminController {
         return ResponseEntity.ok(categoriaRepository.save(categoria));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/categorias/{id}")
     @Operation(summary = "Excluir uma categoria")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoriaRepository.deleteById(id);
@@ -74,7 +81,7 @@ public class CategoriaAdminController {
 
 @Data
 class CategoriaRequest {
-    @jakarta.validation.constraints.NotBlank
-    @jakarta.validation.constraints.Size(max = 100)
+    @NotBlank
+    @Size(max = 100)
     private String nome;
 }

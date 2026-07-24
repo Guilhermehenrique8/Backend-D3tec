@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "success_case")
@@ -38,20 +40,8 @@ public class Case implements Serializable {
     @Column(length = 150)
     private String cliente;
 
-    @Column(name = "categoria_servico", length = 100)
-    private String categoriaServico;
-
-    @Column(name = "contexto_problema", columnDefinition = "TEXT", nullable = false)
-    private String contextoProblema;
-
-    @Column(name = "solucao_desenvolvida", columnDefinition = "TEXT", nullable = false)
-    private String solucaoDesenvolvida;
-
-    @Column(name = "tecnologias_utilizadas", length = 500)
-    private String tecnologiasUtilizadas;
-
-    @Column(name = "resultado_obtido", columnDefinition = "TEXT")
-    private String resultadoObtido;
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String descricao;
 
     @Column(name = "imagem_capa", length = 255)
     private String imagemCapa;
@@ -59,9 +49,21 @@ public class Case implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String depoimento;
 
-    @Column(nullable = false)
-    private boolean publicado = false;
+    @ManyToMany
+    @JoinTable(
+            name = "case_tags",
+            joinColumns = @JoinColumn(name = "case_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    @Column(name = "exibir_ao_publico", nullable = false)
+    private boolean exibirAoPublico;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
 }
