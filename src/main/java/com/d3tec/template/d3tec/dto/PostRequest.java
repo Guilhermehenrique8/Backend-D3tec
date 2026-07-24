@@ -3,6 +3,7 @@ package com.d3tec.template.d3tec.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class PostRequest {
@@ -19,11 +20,11 @@ public class PostRequest {
     private String imagemCapa;
 
     @NotBlank
-    @Size(max = 500)
-    private String resumo;
+    private String descricao;
 
-    @NotBlank
-    private String conteudo;
+    private Long categoriaId;
 
-    private Long tagId;
+    private List<Long> tagIds;
+
+    private boolean exibirAoPublico;
 }

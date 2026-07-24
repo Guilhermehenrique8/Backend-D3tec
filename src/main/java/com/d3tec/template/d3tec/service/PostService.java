@@ -1,9 +1,10 @@
 package com.d3tec.template.d3tec.service;
 
 import com.d3tec.template.d3tec.dto.PostRequest;
+import com.d3tec.template.d3tec.entity.Categoria;
 import com.d3tec.template.d3tec.entity.Post;
-import com.d3tec.template.d3tec.entity.PostStatus;
 import com.d3tec.template.d3tec.entity.Tag;
+import com.d3tec.template.d3tec.repository.CategoriaRepository;
 import com.d3tec.template.d3tec.repository.PostRepository;
 import com.d3tec.template.d3tec.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,71 +21,69 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
+    private final CategoriaRepository categoriaRepository;
 
     public Post create(PostRequest request) {
         Post post = new Post();
         post.setTitulo(request.getTitulo());
         post.setAutor(request.getAutor());
         post.setImagemCapa(request.getImagemCapa());
-        post.setResumo(request.getResumo());
-        post.setConteudo(request.getConteudo());
-        post.setTag(resolveTag(request.getTagId()));
+        post.setDescricao(request.getDescricao());
+        post.setCategoria(resolveCategoria(request.getCategoriaId()));
+        post.setTags(new HashSet<>(resolveTags(request.getTagIds())));
+        post.setExibirAoPublico(request.isExibirAoPublico());
         post.setSlug(generateUniqueSlug(request.getTitulo()));
-        post.setStatus(PostStatus.RASCUNHO);
         post.setCreatedAt(LocalDateTime.now());
+
+        if (request.isExibirAoPublico()) {
+            post.setDataPublicacao(LocalDateTime.now());
+        }
 
         return postRepository.save(post);
     }
 
     public Post update(Long id, PostRequest request) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Post não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Post nao encontrado"));
+
+        boolean estavaPublico = post.isExibirAoPublico();
 
         post.setTitulo(request.getTitulo());
         post.setAutor(request.getAutor());
         post.setImagemCapa(request.getImagemCapa());
-        post.setResumo(request.getResumo());
-        post.setConteudo(request.getConteudo());
-        post.setTag(resolveTag(request.getTagId()));
+        post.setDescricao(request.getDescricao());
+        post.setCategoria(resolveCategoria(request.getCategoriaId()));
+        post.setTags(new HashSet<>(resolveTags(request.getTagIds())));
+        post.setExibirAoPublico(request.isExibirAoPublico());
         post.setUpdatedAt(LocalDateTime.now());
 
-        return postRepository.save(post);
-    }
-
-    public Post publish(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Post não encontrado"));
-
-        post.setStatus(PostStatus.PUBLICADO);
-        post.setDataPublicacao(LocalDateTime.now());
-        post.setUpdatedAt(LocalDateTime.now());
-
-        return postRepository.save(post);
-    }
-
-    public Post unpublish(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Post não encontrado"));
-
-        post.setStatus(PostStatus.RASCUNHO);
-        post.setUpdatedAt(LocalDateTime.now());
+        if (!estavaPublico && request.isExibirAoPublico()) {
+            post.setDataPublicacao(LocalDateTime.now());
+        }
 
         return postRepository.save(post);
     }
 
     public void delete(Long id) {
         if (!postRepository.existsById(id)) {
-            throw new IllegalArgumentException("Post não encontrado");
+            throw new IllegalArgumentException("Post nao encontrado");
         }
         postRepository.deleteById(id);
     }
 
-    private Tag resolveTag(Long tagId) {
-        if (tagId == null) {
+    private Categoria resolveCategoria(Long categoriaId) {
+        if (categoriaId == null) {
             return null;
         }
-        return tagRepository.findById(tagId)
-                .orElseThrow(() -> new IllegalArgumentException("Tag não encontrada"));
+        return categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new IllegalArgumentException("Categoria nao encontrada"));
+    }
+
+    private List<Tag> resolveTags(List<Long> tagIds) {
+        if (tagIds == null || tagIds.isEmpty()) {
+            return List.of();
+        }
+        return tagRepository.findAllById(tagIds);
     }
 
     private String generateUniqueSlug(String titulo) {

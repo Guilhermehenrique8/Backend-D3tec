@@ -9,15 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,13 +23,13 @@ public class PostAdminController {
     private final PostRepository postRepository;
 
     @GetMapping
-    @Operation(summary = "Listar todos os posts, incluindo rascunhos")
+    @Operation(summary = "Listar todos os posts")
     public ResponseEntity<List<Post>> listAll() {
         return ResponseEntity.ok(postRepository.findAll());
     }
 
-        @GetMapping("/{id}")
-    @Operation(summary = "Buscar um post pelo id, incluindo rascunhos")
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar um post pelo id")
     public ResponseEntity<Post> findById(@PathVariable Long id) {
         return postRepository.findById(id)
                 .map(ResponseEntity::ok)
@@ -45,7 +37,7 @@ public class PostAdminController {
     }
 
     @PostMapping
-    @Operation(summary = "Criar um novo post (rascunho)")
+    @Operation(summary = "Criar um novo post")
     public ResponseEntity<Post> create(@RequestBody @Valid PostRequest request) {
         return ResponseEntity.ok(postService.create(request));
     }
@@ -54,18 +46,6 @@ public class PostAdminController {
     @Operation(summary = "Editar um post existente")
     public ResponseEntity<Post> update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
         return ResponseEntity.ok(postService.update(id, request));
-    }
-
-    @PatchMapping("/{id}/publish")
-    @Operation(summary = "Publicar um post")
-    public ResponseEntity<Post> publish(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.publish(id));
-    }
-
-    @PatchMapping("/{id}/unpublish")
-    @Operation(summary = "Despublicar um post (volta para rascunho)")
-    public ResponseEntity<Post> unpublish(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.unpublish(id));
     }
 
     @DeleteMapping("/{id}")

@@ -14,15 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/images")
+@RequestMapping("/admin/posts")
 @RequiredArgsConstructor
-@Tag(name = "Upload de Imagens", description = "Endpoints para upload de imagens")
+@Tag(name = "Upload de Imagens (Blog)", description = "Upload de imagens para posts")
 public class ImageUploadController {
-    
+
     private final ImageUploadService imageUploadService;
 
-    @PostMapping(value = "/upload", consumes = "multipart/form-data")
-    @Operation(summary = "Enviar uma imagem e receber a URL pÃºblica dela")
+    @PostMapping(value = "/upload-cover", consumes = "multipart/form-data")
+    @Operation(summary = "Enviar uma imagem de capa para post e receber a URL publica")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         String url = imageUploadService.upload(file);
         return ResponseEntity.ok(Map.of("url", url));

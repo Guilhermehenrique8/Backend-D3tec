@@ -1,7 +1,5 @@
 package com.d3tec.template.d3tec.entity;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +8,8 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -40,27 +40,29 @@ public class Post implements Serializable {
     @Column(length = 220, nullable = false, unique = true)
     private String slug;
 
-    @Column(length = 150, nullable = false)
+    @Column(length = 150)
     private String autor;
 
     @Column(name = "imagem_capa", length = 255)
     private String imagemCapa;
 
-    @Column(length = 500, nullable = false)
-    private String resumo;
-
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String conteudo;
+    private String descricao;
 
-    @Column(length = 100)
-    private String categoria;
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private PostStatus status = PostStatus.RASCUNHO;
+    @ManyToMany
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    @Column(name = "exibir_ao_publico", nullable = false)
+    private boolean exibirAoPublico;
 
     @Column(name = "published_at")
     private LocalDateTime dataPublicacao;
