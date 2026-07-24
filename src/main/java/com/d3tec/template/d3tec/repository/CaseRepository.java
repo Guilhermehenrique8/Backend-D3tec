@@ -25,4 +25,6 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
 
     @EntityGraph(attributePaths = {"tags"})
     Optional<Case> findById(Long id);
+
+    long countByExibirAoPublicoTrue();
 }

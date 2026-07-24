@@ -13,8 +13,9 @@ public class TagService {
     private final TagRepository tagRepository;
 
     public Tag create(TagRequest request) {
-        if (tagRepository.existsByNome(request.getNome())) {
-            throw new IllegalArgumentException("Já existe uma tag com esse nome");
+        var existente = tagRepository.findByNome(request.getNome());
+        if (existente.isPresent()) {
+            return existente.get();
         }
         Tag tag = new Tag();
         tag.setNome(request.getNome());
