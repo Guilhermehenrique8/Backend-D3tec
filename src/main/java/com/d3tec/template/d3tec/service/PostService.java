@@ -8,12 +8,16 @@ import com.d3tec.template.d3tec.repository.CategoriaRepository;
 import com.d3tec.template.d3tec.repository.PostRepository;
 import com.d3tec.template.d3tec.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +73,22 @@ public class PostService {
             throw new IllegalArgumentException("Post nao encontrado");
         }
         postRepository.deleteById(id);
+    }
+
+    public Optional<Post> findById(Long id) {
+        return postRepository.findById(id);
+    }
+
+    public Page<Post> findPublished(Pageable pageable) {
+        Page<Long> idsPage = postRepository.findIdsByExibirAoPublicoTrue(pageable);
+        List<Post> posts = postRepository.findByIdInOrderByDataPublicacaoDesc(idsPage.getContent());
+        return new PageImpl<>(posts, pageable, idsPage.getTotalElements());
+    }
+
+    public Page<Post> findAllPaginated(Pageable pageable) {
+        Page<Long> idsPage = postRepository.findAllIdsByOrderByCreatedAtDesc(pageable);
+        List<Post> posts = postRepository.findByIdInOrderByCreatedAtDesc(idsPage.getContent());
+        return new PageImpl<>(posts, pageable, idsPage.getTotalElements());
     }
 
     private Categoria resolveCategoria(Long categoriaId) {
