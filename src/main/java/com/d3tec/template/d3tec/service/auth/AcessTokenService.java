@@ -39,6 +39,8 @@ public class AcessTokenService {
                 .claim("privileges", privileges.stream().toList())
                 .claim("typ", "access")
                 .claim("mfa_verified", mfaVerified)
+                .claim("email", user.getEmail())
+                .claim("name", user.getNome() != null ? user.getNome() : "Admin")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
                 .build();

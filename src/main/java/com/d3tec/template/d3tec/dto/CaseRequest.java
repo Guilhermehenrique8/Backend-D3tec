@@ -6,23 +6,22 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PostRequest {
-
-    @NotBlank
-    @Size(max = 200)
-    private String titulo;
+public class CaseRequest {
 
     @NotBlank
     @Size(max = 150)
-    private String autor;
+    private String nomeProjeto;
 
-    @Size(max = 255)
-    private String imagemCapa;
+    @Size(max = 150)
+    private String cliente;
 
     @NotBlank
     private String descricao;
 
-    private Long categoriaId;
+    @Size(max = 255)
+    private String imagemCapa;
+
+    private String depoimento;
 
     private List<Long> tagIds;
 

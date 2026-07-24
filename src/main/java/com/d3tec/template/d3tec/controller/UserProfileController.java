@@ -1,7 +1,8 @@
-package com.d3tec.template.d3tec.controller.auth;
+package com.d3tec.template.d3tec.controller;
 
 import com.d3tec.template.d3tec.config.security.UsuarioPrincipal;
 import com.d3tec.template.d3tec.dto.ProfilePictureRequest;
+import com.d3tec.template.d3tec.dto.UserMeResponse;
 import com.d3tec.template.d3tec.entity.User;
 import com.d3tec.template.d3tec.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserProfileController {
 
     private final UserRepository userRepository;
+
+    @GetMapping
+    @Operation(summary = "Dados do usuÃ¡rio logado")
+    public ResponseEntity<UserMeResponse> me(
+            @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal
+    ) {
+        User user = userRepository.findById(usuarioPrincipal.getUserDto().getId())
+                .orElseThrow(() -> new IllegalStateException("UsuÃ¡rio nÃ£o encontrado"));
+
+        return ResponseEntity.ok(new UserMeResponse(
+                user.getNome() != null ? user.getNome() : "Admin",
+                user.getEmail()
+        ));
+    }
 
     @PatchMapping("/profile-picture")
     @Operation(summary = "Atualizar a foto de perfil do usuÃ¡rio logado")
