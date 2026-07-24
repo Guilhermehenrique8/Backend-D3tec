@@ -36,12 +36,12 @@ public class SimpleEmailTemplateRenderer implements EmailTemplateRenderer {
                     "templates/email/verification.txt"
             );
             case PASSWORD_RESET -> new TemplateDefinition(
-                    "InstruÃ§Ãµes de recuperaÃ§Ã£o de senha",
+                    "Instrucoes de recuperacao de senha",
                     "templates/email/password-reset.html",
                     "templates/email/password-reset.txt"
             );
             case CONTACT_FORM -> new TemplateDefinition(
-                    "Novo contato pelo site da D3TEC â€” {{assunto}}",
+                    "Novo contato pelo site da D3TEC - {{assunto}}",
                     "templates/email/contact-notification.html",
                     "templates/email/contact-notification.txt"
             );
@@ -66,7 +66,7 @@ public class SimpleEmailTemplateRenderer implements EmailTemplateRenderer {
     private String loadTemplate(String templatePath) {
         ClassPathResource resource = new ClassPathResource(templatePath);
         if (!resource.exists()) {
-            throw new IllegalStateException("Template de email nÃ£o encontrado: " + templatePath);
+            throw new IllegalStateException("Template de email nao encontrado: " + templatePath);
         }
 
         try {

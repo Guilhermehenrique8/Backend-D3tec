@@ -25,6 +25,9 @@ public class ContactRequest {
     @Size(max = 150)
     private String empresa;
 
+    @Size(max = 255)
+    private String endereco;
+
     @NotBlank
     @Size(max = 150)
     @Schema(example = "OrÃ§amento para sistema web", requiredMode = Schema.RequiredMode.REQUIRED)
