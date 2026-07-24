@@ -44,6 +44,9 @@ public class ContactMessage implements Serializable {
     @Column(length = 150)
     private String empresa;
 
+    @Column(length = 255)
+    private String endereco;
+
     @Column(length = 150, nullable = false)
     private String assunto;
 

@@ -32,6 +32,7 @@ public class ContactService {
         message.setEmail(request.getEmail());
         message.setTelefone(request.getTelefone());
         message.setEmpresa(request.getEmpresa());
+        message.setEndereco(request.getEndereco());
         message.setAssunto(request.getAssunto());
         message.setMensagem(request.getMensagem());
         message.setCreatedAt(LocalDateTime.now());
