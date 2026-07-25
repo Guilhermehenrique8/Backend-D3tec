@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users/me")
 @RequiredArgsConstructor
-@Tag(name = "Perfil do usuÃ¡rio", description = "Endpoints do prÃ³prio usuÃ¡rio autenticado")
+@Tag(name = "Perfil do usuario", description = "Endpoints do proprio usuario autenticado")
 public class UserProfileController {
 
     private final UserRepository userRepository;
 
     @GetMapping
-    @Operation(summary = "Dados do usuÃ¡rio logado")
+    @Operation(summary = "Dados do usuario logado")
     public ResponseEntity<UserMeResponse> me(
             @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal
     ) {
         User user = userRepository.findById(usuarioPrincipal.getUserDto().getId())
-                .orElseThrow(() -> new IllegalStateException("UsuÃ¡rio nÃ£o encontrado"));
+                .orElseThrow(() -> new IllegalStateException("Usuario nao encontrado"));
 
         return ResponseEntity.ok(new UserMeResponse(
                 user.getNome() != null ? user.getNome() : "Admin",
@@ -40,13 +40,13 @@ public class UserProfileController {
     }
 
     @PatchMapping("/profile-picture")
-    @Operation(summary = "Atualizar a foto de perfil do usuÃ¡rio logado")
+    @Operation(summary = "Atualizar a foto de perfil do usuario logado")
     public ResponseEntity<User> updateProfilePicture(
             @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal,
             @RequestBody @Valid ProfilePictureRequest request
     ) {
         User user = userRepository.findById(usuarioPrincipal.getUserDto().getId())
-                .orElseThrow(() -> new IllegalStateException("UsuÃ¡rio nÃ£o encontrado"));
+                .orElseThrow(() -> new IllegalStateException("Usuario nao encontrado"));
 
         user.setProfilePictureUrl(request.getProfilePictureUrl());
         return ResponseEntity.ok(userRepository.save(user));

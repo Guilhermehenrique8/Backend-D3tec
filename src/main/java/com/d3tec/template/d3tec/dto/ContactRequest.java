@@ -30,14 +30,14 @@ public class ContactRequest {
 
     @NotBlank
     @Size(max = 150)
-    @Schema(example = "OrÃ§amento para sistema web", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(example = "Orcamento para sistema web", requiredMode = Schema.RequiredMode.REQUIRED)
     private String assunto;
 
     @NotBlank
     @Size(max = 5000)
     private String mensagem;
 
-    // Honeypot anti-spam: campo escondido no formulÃ¡rio do site.
+    // Honeypot anti-spam: campo escondido no formulario do site.
     // Um visitante real nunca preenche isso; bots costumam preencher tudo.
     private String website;
 }

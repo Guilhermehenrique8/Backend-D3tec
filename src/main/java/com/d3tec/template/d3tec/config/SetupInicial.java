@@ -46,12 +46,12 @@ public class SetupInicial implements ApplicationRunner {
         }
 
         if (userRepository.findByEmail(adminEmail).isPresent()) {
-            log.warn("Setup inicial: email jÃ¡ existe, mas nenhum admin foi encontrado nas roles. Verifique dados.");
+            log.warn("Setup inicial: email ja existe, mas nenhum admin foi encontrado nas roles. Verifique dados.");
             return;
         }
 
         var adminRole = roleRepository.findByName("ADMIN")
-                .orElseThrow(() -> new RuntimeException("Role ADMIN nÃ£o encontrada!"));
+                .orElseThrow(() -> new RuntimeException("Role ADMIN nao encontrada!"));
 
         User admin = new User();
         admin.setEmail(adminEmail);
@@ -63,7 +63,7 @@ public class SetupInicial implements ApplicationRunner {
 
         userRepository.save(admin);
 
-        log.info("Setup inicial: usuÃ¡rio ADMIN criado com email={}", adminEmail);
+        log.info("Setup inicial: usuario ADMIN criado com email={}", adminEmail);
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -77,8 +77,8 @@ public class SetupInicial implements ApplicationRunner {
 
         String url = swaggerPath.startsWith("/") ? base + swaggerPath : base + "/" + swaggerPath;
 
-        log.info("Swagger UI disponÃ­vel em: {}", url);
+        log.info("Swagger UI disponivel em: {}", url);
 
-        log.info("OpenAPI JSON disponÃ­vel em: {}/v3/api-docs", base);
+        log.info("OpenAPI JSON disponivel em: {}/v3/api-docs", base);
     }
 }

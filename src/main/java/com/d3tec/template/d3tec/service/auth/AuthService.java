@@ -60,16 +60,16 @@ public class AuthService {
                 .orElseThrow(() -> {
                     bruteforceProtectionService.onLoginFailure(keyIp);
                     bruteforceProtectionService.onLoginFailure(keyIpEmail);
-                    return new BadCredentialsException("Credenciais invÃ¡lidas!");
+                    return new BadCredentialsException("Credenciais invalidas!");
                 });
         if ( !passwordMatches(loginRequest.getPassword(), user.getPassword()) ) {
             bruteforceProtectionService.onLoginFailure(keyIp);
             bruteforceProtectionService.onLoginFailure(keyIpEmail);
-            throw new BadCredentialsException("Credenciais invÃ¡lidas!");
+            throw new BadCredentialsException("Credenciais invalidas!");
         }
 
         if (!user.isEmailVerified()) {
-            throw new EmailNotVerifiedException("Email nÃ£o verificado. Solicite um novo link de confirmaÃ§Ã£o.");
+            throw new EmailNotVerifiedException("Email nao verificado. Solicite um novo link de confirmacao.");
         }
 
         bruteforceProtectionService.onLoginSuccess(keyIp);
@@ -107,11 +107,11 @@ public class AuthService {
         // Verifica se o usuario ja existe no banco de dados
         var existingUser = userRepository.findByEmail(normalizedEmail);
         if ( existingUser.isPresent() ) {
-            throw new ConflictException("E-mail jÃ¡ cadastrado");
+            throw new ConflictException("E-mail ja cadastrado");
         }
 
         var basicRole = roleRepository.findByName("BASIC")
-                .orElseThrow(() -> new RuntimeException("Role nÃ£o encontrada!"));
+                .orElseThrow(() -> new RuntimeException("Role nao encontrada!"));
 
         User user = new User();
         user.setEmail(normalizedEmail);
@@ -127,7 +127,7 @@ public class AuthService {
         applicationEmailService.sendEmailVerification(savedUser, rawToken);
 
         return RegisterResponse.builder()
-                .message("UsuÃ¡rio cadastrado com sucesso! Verifique seu email para liberar o acesso.")
+                .message("Usuario cadastrado com sucesso! Verifique seu email para liberar o acesso.")
                 .email(savedUser.getEmail())
                 .verificationRequired(true)
                 .build();
@@ -135,7 +135,7 @@ public class AuthService {
 
     public void logout(Long authenticatedUserId, RefreshRequest request) {
         User user = userRepository.findById(authenticatedUserId)
-                .orElseThrow(() -> new NotFoundException("UsuÃ¡rio nÃ£o encontrado."));
+                .orElseThrow(() -> new NotFoundException("Usuario nao encontrado."));
 
         refreshTokenService.revokeOwnedToken(user, request.getRefreshToken());
     }
@@ -157,7 +157,7 @@ public class AuthService {
                 });
 
         return new GenericMessageResponse(
-                "Se o email estiver cadastrado e pendente de verificaÃ§Ã£o, uma nova mensagem foi enviada."
+                "Se o email estiver cadastrado e pendente de verificacao, uma nova mensagem foi enviada."
         );
     }
 
@@ -171,7 +171,7 @@ public class AuthService {
                 });
 
         return new GenericMessageResponse(
-                "Se o email estiver cadastrado, enviaremos instruÃ§Ãµes para continuar a recuperaÃ§Ã£o de senha."
+                "Se o email estiver cadastrado, enviaremos instrucoes para continuar a recuperacao de senha."
         );
     }
 

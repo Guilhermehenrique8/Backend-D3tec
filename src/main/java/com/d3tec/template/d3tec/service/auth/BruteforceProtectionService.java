@@ -25,10 +25,10 @@ public class BruteforceProtectionService {
     @Value("${security.bruteforce.lock-seconds:900}")
     private long lockSeconds;
 
-    // Contador de falhas expira automaticamente apÃ³s a janela
+    // Contador de falhas expira automaticamente apos a janela
     private Cache<String, Integer> failuresCache;
 
-    // Bloqueio expira automaticamente apÃ³s lockSeconds
+    // Bloqueio expira automaticamente apos lockSeconds
     private Cache<String, Long> lockCache;
 
     @jakarta.annotation.PostConstruct

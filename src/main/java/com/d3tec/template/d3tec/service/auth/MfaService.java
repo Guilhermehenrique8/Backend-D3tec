@@ -39,13 +39,13 @@ public class MfaService {
     @Transactional
     public MfaSetupResponse mfaSetupForUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("UsuÃ¡rio nÃ£o encontrado"));
+                .orElseThrow(() -> new BadCredentialsException("Usuario nao encontrado"));
 
         if (user.isMfaEnabled()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "UsuÃ¡rio ja possui o mfa habilitado!");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Usuario ja possui o mfa habilitado!");
         }
 
-        // se nÃ£o tem secret por algum motivo, gere
+        // se nao tem secret por algum motivo, gere
         if (user.getSecret() == null || user.getSecret().isBlank()) {
             user.setSecret(mfaSecretProtectionService.protect(mfaTokenManager.generateSecretKey()));
         } else {
@@ -62,21 +62,21 @@ public class MfaService {
     @Transactional
     public void confirmMfa(Long userId, String code) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("UsuÃ¡rio nÃ£o encontrado"));
+                .orElseThrow(() -> new BadCredentialsException("Usuario nao encontrado"));
 
         if (user.isMfaEnabled()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "UsuÃ¡rio ja possui o mfa habilitado!");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Usuario ja possui o mfa habilitado!");
         }
 
         if (user.getSecret() == null || user.getSecret().isBlank()) {
-            throw new BadCredentialsException("MFA nÃ£o iniciado");
+            throw new BadCredentialsException("MFA nao iniciado");
         }
 
         String rawSecret = revealSecret(user);
         migrateSecretIfNeeded(user);
 
         if (!mfaTokenManager.verifyTotp(code, rawSecret)) {
-            throw new BadCredentialsException("CÃ³digo MFA invÃ¡lido!");
+            throw new BadCredentialsException("Codigo MFA invalido!");
         }
 
         user.setMfaEnabled(true);
@@ -89,28 +89,28 @@ public class MfaService {
         try{
             jwt = jwtDecoder.decode(req.getMfaToken());
         } catch (Exception e) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "Token MFA invÃ¡lido ou expirado");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Token MFA invalido ou expirado");
         }
 
         // valida claims
         if (!"mfa_challenge".equals(jwt.getClaimAsString("typ")) ||
                 !"pending".equals(jwt.getClaimAsString("mfa"))) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Token MFA invÃ¡lido!");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Token MFA invalido!");
         }
 
         Long userId = Long.valueOf(jwt.getSubject());
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Token MFA invÃ¡lido!"));
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Token MFA invalido!"));
 
         if (!user.isMfaEnabled()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "MFA nÃ£o habilitado!");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "MFA nao habilitado!");
         }
 
         String rawSecret = revealSecret(user);
         migrateSecretIfNeeded(user);
 
         if (!mfaTokenManager.verifyTotp(req.getMfaCode(), rawSecret)) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "CÃ³digo MFA invÃ¡lido!");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Codigo MFA invalido!");
         }
 
         // emite JWT final
@@ -129,19 +129,19 @@ public class MfaService {
     @Transactional
     public void disableMfa(Long userId, MfaDisableRequest request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("UsuÃ¡rio nÃ£o encontrado"));
+                .orElseThrow(() -> new BadCredentialsException("Usuario nao encontrado"));
 
         if (!user.isMfaEnabled()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "MFA nÃ£o estÃ¡ habilitado para este usuÃ¡rio.");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "MFA nao esta habilitado para este usuario.");
         }
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Senha atual invÃ¡lida.");
+            throw new BadCredentialsException("Senha atual invalida.");
         }
 
         String rawSecret = revealSecret(user);
         if (!mfaTokenManager.verifyTotp(request.getCode(), rawSecret)) {
-            throw new BadCredentialsException("CÃ³digo MFA invÃ¡lido!");
+            throw new BadCredentialsException("Codigo MFA invalido!");
         }
 
         user.setMfaEnabled(false);
@@ -151,7 +151,7 @@ public class MfaService {
 
     private String revealSecret(User user) {
         if (!StringUtils.hasText(user.getSecret())) {
-            throw new BadCredentialsException("MFA nÃ£o iniciado");
+            throw new BadCredentialsException("MFA nao iniciado");
         }
 
         return mfaSecretProtectionService.reveal(user.getSecret());

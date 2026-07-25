@@ -22,7 +22,7 @@ public class MfaTokenManager {
     private static final Base32 BASE32 = new Base32();
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    // PadrÃµes TOTP
+    // Padroes TOTP
     private static final int DEFAULT_DIGITS = 6;
     private static final int DEFAULT_PERIOD_SECONDS = 30;
     private static final int DEFAULT_ALLOWED_SKEW_STEPS = 1; // aceita +/- 30s
@@ -33,7 +33,7 @@ public class MfaTokenManager {
     @Value("${spring.application.name}")
     private String issuer;
 
-    // Gera um secret em Base32 compatÃ­vel com otpauth.
+    // Gera um secret em Base32 compativel com otpauth.
     public String generateSecretKey() {
         byte[] raw = new byte[20]; // 160 bits
         RANDOM.nextBytes(raw);
@@ -56,7 +56,7 @@ public class MfaTokenManager {
         }
     }
 
-    // Verifica o cÃ³digo TOTP (6 dÃ­gitos) com tolerÃ¢ncia de tempo.
+    // Verifica o codigo TOTP (6 digitos) com tolerA¢ncia de tempo.
     public boolean verifyTotp(String code, String base32Secret) {
         if (code == null || base32Secret == null) return false;
 
@@ -88,7 +88,7 @@ public class MfaTokenManager {
         }
     }
 
-    // Monta o otpauth URI padrÃ£o (compatÃ­vel com Google Authenticator).
+    // Monta o otpauth URI padrao (compativel com Google Authenticator).
     private static String buildOtpAuthUri(
             String issuer,
             String account,

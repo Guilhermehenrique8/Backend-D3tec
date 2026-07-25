@@ -34,12 +34,12 @@ public class GlobalExceptionHandler {
                 .map(this::mapFieldError)
                 .toList();
 
-        return build(HttpStatus.BAD_REQUEST, "Dados invÃ¡lidos.", request.getRequestURI(), fields);
+        return build(HttpStatus.BAD_REQUEST, "Dados invalidos.", request.getRequestURI(), fields);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiErrorResponse> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
-        return build(HttpStatus.UNAUTHORIZED, "Credenciais invÃ¡lidas!", request.getRequestURI(), null);
+        return build(HttpStatus.UNAUTHORIZED, "Credenciais invalidas!", request.getRequestURI(), null);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -49,8 +49,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex, HttpServletRequest request) {
-        // Ex.: unique violation (email jÃ¡ existe), FK, etc.
-        return build(HttpStatus.CONFLICT, "ViolaÃ§Ã£o de integridade dos dados.", request.getRequestURI(), null);
+        // Ex.: unique violation (email ja existe), FK, etc.
+        return build(HttpStatus.CONFLICT, "Violacao de integridade dos dados.", request.getRequestURI(), null);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
-        log.error("Erro nÃ£o tratado em {}: {}", request.getRequestURI(), ex.getMessage(), ex);
+        log.error("Erro nao tratado em {}: {}", request.getRequestURI(), ex.getMessage(), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno.", request.getRequestURI(), null);
     }
 
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
     }
 
     private FieldViolation mapFieldError(FieldError fe) {
-        String msg = fe.getDefaultMessage() == null ? "InvÃ¡lido" : fe.getDefaultMessage();
+        String msg = fe.getDefaultMessage() == null ? "Invalido" : fe.getDefaultMessage();
         return new FieldViolation(fe.getField(), msg);
     }
 }

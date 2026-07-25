@@ -19,7 +19,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API - Template")
-                        .description("DocumentaÃ§Ã£o da API")
+                        .description("Documentacao da API")
                         .version("V1"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components().addSecuritySchemes(

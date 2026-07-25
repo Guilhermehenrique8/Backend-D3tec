@@ -43,10 +43,10 @@ public class EmailTokenService {
         String hash = hashToken(rawToken);
 
         EmailToken token = emailTokenRepository.findByTokenHashAndType(hash, type)
-                .orElseThrow(() -> new BadCredentialsException("Token invÃ¡lido"));
+                .orElseThrow(() -> new BadCredentialsException("Token invalido"));
 
         if (token.isConsumed()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Token jÃ¡ utilizado");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Token ja utilizado");
         }
 
         if (token.getExpiresAt().isBefore(Instant.now())) {
