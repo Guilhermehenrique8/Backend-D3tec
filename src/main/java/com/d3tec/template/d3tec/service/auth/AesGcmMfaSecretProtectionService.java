@@ -101,7 +101,7 @@ public class AesGcmMfaSecretProtectionService implements MfaSecretProtectionServ
             }
             return key;
         } catch (IllegalArgumentException ex) {
-            throw new IllegalStateException("A chave de criptografia do MFA estÃ¡ invÃ¡lida. Use uma chave AES em Base64.", ex);
+            throw new IllegalStateException("A chave de criptografia do MFA esta invalida. Use uma chave AES em Base64.", ex);
         }
     }
 }

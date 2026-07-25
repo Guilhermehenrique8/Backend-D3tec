@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ResendVerificationRequest {
-    @NotBlank(message = "O email nÃ£o pode estar vazio!")
-    @Email(message = "Formato de email invÃ¡lido")
+    @NotBlank(message = "O email nao pode estar vazio!")
+    @Email(message = "Formato de email invalido")
     private String email;
 }

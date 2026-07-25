@@ -44,7 +44,7 @@ public class RefreshTokenService {
         String hash = hashToken(rawToken);
 
         RefreshToken token = refreshTokenRepository.findByTokenHash(hash)
-                .orElseThrow(() -> new BadCredentialsException("Refresh token invÃ¡lido"));
+                .orElseThrow(() -> new BadCredentialsException("Refresh token invalido"));
 
         if (token.getExpired()) {
             throw new BadCredentialsException("Refresh token revogado");
@@ -71,7 +71,7 @@ public class RefreshTokenService {
         RefreshToken token = validateAndGetToken(rawToken);
 
         if (!token.getUser().getId().equals(owner.getId())) {
-            throw new BadCredentialsException("Refresh token invÃ¡lido");
+            throw new BadCredentialsException("Refresh token invalido");
         }
 
         token.setExpired(true);
@@ -85,7 +85,7 @@ public class RefreshTokenService {
         User user = persistedToken.getUser();
 
         if (user.isMfaEnabled() && !Boolean.TRUE.equals(persistedToken.getMfaVerified())) {
-            throw new BadCredentialsException("SessÃ£o invÃ¡lida para a polÃ­tica atual de MFA. FaÃ§a login novamente.");
+            throw new BadCredentialsException("Sessao invalida para a politica atual de MFA. Faca login novamente.");
         }
 
         revoke(refreshToken);

@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
     @Email
-    @Schema(example = "usuario@usuario.com", description = "E-mail do usuÃ¡rio", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(example = "usuario@usuario.com", description = "E-mail do usuario", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
     @Size(min = 6, max = 64)
-    @Schema(example = "senha123", description = "Senha do usuÃ¡rio", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(example = "senha123", description = "Senha do usuario", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
     @NotBlank

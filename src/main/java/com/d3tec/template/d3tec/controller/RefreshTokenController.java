@@ -25,32 +25,10 @@ public class RefreshTokenController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping
-    @Operation(
-            summary = "Gera novamente um refresh token e um Acess Token",
-            description = "Renova a autenticaÃ§Ã£o"
-    )
-    @ApiResponses(value = {@ApiResponse(
-            responseCode = "200",
-            description = "Um novo jwt foi gerado",
-            content = @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = TokenPairDTO.class),
-                    examples = {
-                            @ExampleObject(
-                                    name = "Par de tokens",
-                                    value = """
-                                {
-                                  "acessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                                  "refreshToken": "99b5fec941ae8fd37e."
-                                }
-                                """
-                            )
-                    }
-            )
-    )})
+    @Operation(summary = "Renovar tokens", description = "Gera um novo par de access token e refresh token")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Novo par de tokens gerado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TokenPairDTO.class)))})
     public ResponseEntity<TokenPairDTO> refresh(@RequestBody RefreshRequest request) {
-        return ResponseEntity.ok(
-                refreshTokenService.refresh(request.getRefreshToken())
-        );
+        return ResponseEntity.ok(refreshTokenService.refresh(request.getRefreshToken()));
     }
 }

@@ -25,13 +25,13 @@ public class EmailInfrastructureValidator {
         require(environment.getProperty("spring.mail.host"), "spring.mail.host");
         Integer port = environment.getProperty("spring.mail.port", Integer.class);
         if (port == null || port <= 0) {
-            throw new IllegalStateException("Propriedade obrigatÃ³ria ausente: spring.mail.port");
+            throw new IllegalStateException("Propriedade obrigatoria ausente: spring.mail.port");
         }
     }
 
     private void require(String value, String property) {
         if (!StringUtils.hasText(value)) {
-            throw new IllegalStateException("Propriedade obrigatÃ³ria ausente: " + property);
+            throw new IllegalStateException("Propriedade obrigatoria ausente: " + property);
         }
     }
 }

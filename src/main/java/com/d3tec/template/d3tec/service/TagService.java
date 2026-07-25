@@ -24,14 +24,14 @@ public class TagService {
 
     public Tag update(Long id, TagRequest request) {
         Tag tag = tagRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tag não encontrada"));
+                .orElseThrow(() -> new IllegalArgumentException("Tag nAo encontrada"));
         tag.setNome(request.getNome());
         return tagRepository.save(tag);
     }
 
     public void delete(Long id) {
         if (!tagRepository.existsById(id)) {
-            throw new IllegalArgumentException("Tag não encontrada");
+            throw new IllegalArgumentException("Tag nAo encontrada");
         }
         tagRepository.deleteById(id);
     }

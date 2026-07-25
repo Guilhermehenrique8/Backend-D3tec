@@ -38,7 +38,7 @@ public class JwtConverterConfig {
             );
 
             var user = userRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("UsuÃ¡rio nÃ£o encontrado."));
+                    .orElseThrow(() -> new RuntimeException("Usuario nao encontrado."));
 
             var principal = new UsuarioPrincipal(user, authorities);
 

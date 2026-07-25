@@ -22,7 +22,7 @@ public class ContactService {
     private String notificationEmail;
 
     public GenericMessageResponse send(ContactRequest request) {
-        // honeypot preenchido = bot; responde sucesso mas nÃ£o salva nem envia nada
+        // honeypot preenchido = bot; responde sucesso mas nao salva nem envia nada
         if (request.getWebsite() != null && !request.getWebsite().isBlank()) {
             return new GenericMessageResponse("Mensagem enviada com sucesso.");
         }
