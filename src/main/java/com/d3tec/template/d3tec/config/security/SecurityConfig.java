@@ -70,7 +70,11 @@ public class SecurityConfig {
                             "/posts",
                             "/posts/**",
                             "/categorias",
-                            "/categorias/**"
+                            "/categorias/**",
+                            "/indicadores",
+                            "/indicadores/**",
+                            "/partners",
+                            "/partners/**"
                     ).permitAll()
                     .requestMatchers(
                             "/v3/api-docs/**",
