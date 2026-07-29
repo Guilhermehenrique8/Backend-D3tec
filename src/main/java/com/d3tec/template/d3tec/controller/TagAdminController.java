@@ -5,6 +5,7 @@ import com.d3tec.template.d3tec.entity.Tag;
 import com.d3tec.template.d3tec.repository.TagRepository;
 import com.d3tec.template.d3tec.service.TagService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/tags")
 @RequiredArgsConstructor
 public class TagAdminController {
 
     private final TagService tagService;
     private final TagRepository tagRepository;
 
-    @GetMapping
-    @Operation(summary = "Listar todas as tags")
+    @GetMapping("/tags")
+    @Operation(summary = "Listar todas as tags (publico)")
+    @SecurityRequirement(name = "")
+    public ResponseEntity<List<Tag>> listPublic() {
+        return ResponseEntity.ok(tagRepository.findAll());
+    }
+
+    @GetMapping("/admin/tags")
+    @Operation(summary = "Listar todas as tags (admin)")
     public ResponseEntity<List<Tag>> listAll() {
         return ResponseEntity.ok(tagRepository.findAll());
     }

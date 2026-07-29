@@ -4,6 +4,8 @@ import com.d3tec.template.d3tec.dto.PostRequest;
 import com.d3tec.template.d3tec.entity.Post;
 import com.d3tec.template.d3tec.repository.PostRepository;
 import com.d3tec.template.d3tec.service.PostService;
+
+import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -23,11 +25,15 @@ public class PostController {
 
     /* Public */
     @GetMapping("/posts")
-    @Operation(summary = "Listar posts publicados paginados")
+    @Operation(summary = "Listar posts publicados paginados com filtros opcionais")
     @SecurityRequirement(name = "")
     @Transactional(readOnly = true)
-    public ResponseEntity<Page<Post>> listPublic(Pageable pageable) {
-        return ResponseEntity.ok(postService.findPublished(pageable));
+    public ResponseEntity<Page<Post>> listPublic(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long categoriaId,
+            @RequestParam(required = false) List<Long> tagIds,
+            Pageable pageable) {
+        return ResponseEntity.ok(postService.findPublishedFiltered(search, categoriaId, tagIds, pageable));
     }
 
     @GetMapping("/posts/{slug}")
