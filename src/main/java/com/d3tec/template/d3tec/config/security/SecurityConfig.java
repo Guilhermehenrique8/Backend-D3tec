@@ -71,6 +71,8 @@ public class SecurityConfig {
                             "/posts/**",
                             "/categorias",
                             "/categorias/**",
+                            "/tags",
+                            "/tags/**",
                             "/indicadores",
                             "/indicadores/**",
                             "/partners",

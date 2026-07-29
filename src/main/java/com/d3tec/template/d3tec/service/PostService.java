@@ -80,7 +80,20 @@ public class PostService {
     }
 
     public Page<Post> findPublished(Pageable pageable) {
-        Page<Long> idsPage = postRepository.findIdsByExibirAoPublicoTrue(pageable);
+        return findPublishedFiltered(null, null, null, pageable);
+    }
+
+    public Page<Post> findPublishedFiltered(String search, Long categoriaId, List<Long> tagIds, Pageable pageable) {
+        Page<Long> idsPage;
+        if (tagIds != null && !tagIds.isEmpty()) {
+            Page<Object[]> rawPage = postRepository.findIdsByTags(tagIds, pageable);
+            List<Long> ids = rawPage.getContent().stream().map(arr -> (Long) arr[0]).toList();
+            idsPage = new PageImpl<>(ids, pageable, rawPage.getTotalElements());
+        } else if (search != null || categoriaId != null) {
+            idsPage = postRepository.findIdsByFilters(search, categoriaId, pageable);
+        } else {
+            idsPage = postRepository.findIdsByExibirAoPublicoTrue(pageable);
+        }
         List<Post> posts = postRepository.findByIdInOrderByDataPublicacaoDesc(idsPage.getContent());
         return new PageImpl<>(posts, pageable, idsPage.getTotalElements());
     }
