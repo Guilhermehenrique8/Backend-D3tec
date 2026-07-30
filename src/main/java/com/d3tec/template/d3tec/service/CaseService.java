@@ -27,6 +27,10 @@ public class CaseService {
         return caseRepository.findById(id);
     }
 
+    public Optional<Case> findFeatured() {
+        return caseRepository.findByFeaturedTrue();
+    }
+
     public Page<Case> findPublished(Pageable pageable) {
         Page<Long> idsPage = caseRepository.findIdsByExibirAoPublicoTrue(pageable);
         List<Case> cases = caseRepository.findByIdInOrderByCreatedAtDesc(idsPage.getContent());
@@ -69,6 +73,19 @@ public class CaseService {
         c.setDepoimento(request.getDepoimento());
         c.setTags(new HashSet<>(resolveTags(request.getTagIds())));
         c.setExibirAoPublico(request.isExibirAoPublico());
+        applyFeatured(c, request.isFeatured());
+    }
+
+    private void applyFeatured(Case c, boolean featured) {
+        if (featured) {
+            caseRepository.findByFeaturedTrue().ifPresent(current -> {
+                if (!current.getId().equals(c.getId())) {
+                    current.setFeatured(false);
+                    caseRepository.save(current);
+                }
+            });
+        }
+        c.setFeatured(featured);
     }
 
     private List<Tag> resolveTags(List<Long> tagIds) {

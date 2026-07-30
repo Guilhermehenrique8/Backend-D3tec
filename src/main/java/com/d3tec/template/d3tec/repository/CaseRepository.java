@@ -27,4 +27,7 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
     Optional<Case> findById(Long id);
 
     long countByExibirAoPublicoTrue();
+
+    @EntityGraph(attributePaths = {"tags"})
+    Optional<Case> findByFeaturedTrue();
 }

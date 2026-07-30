@@ -60,6 +60,9 @@ public class Case implements Serializable {
     @Column(name = "exibir_ao_publico", nullable = false)
     private boolean exibirAoPublico;
 
+    @Column(nullable = false)
+    private boolean featured;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 

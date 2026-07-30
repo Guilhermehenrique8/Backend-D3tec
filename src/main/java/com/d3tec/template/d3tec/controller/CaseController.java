@@ -28,6 +28,17 @@ public class CaseController {
         return ResponseEntity.ok(caseService.findPublished(pageable));
     }
 
+    @GetMapping("/cases/featured")
+    @Operation(summary = "Buscar o case em destaque")
+    @SecurityRequirement(name = "")
+    @Transactional(readOnly = true)
+    public ResponseEntity<Case> findFeatured() {
+        return caseService.findFeatured()
+                .filter(Case::isExibirAoPublico)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/cases/{id}")
     @Operation(summary = "Buscar um case pelo id")
     @SecurityRequirement(name = "")
