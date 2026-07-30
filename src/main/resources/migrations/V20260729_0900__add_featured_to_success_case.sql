@@ -1,0 +1,2 @@
+ALTER TABLE success_case
+    ADD COLUMN featured BOOLEAN NOT NULL DEFAULT FALSE;

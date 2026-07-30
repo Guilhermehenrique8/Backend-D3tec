@@ -26,4 +26,6 @@ public class CaseRequest {
     private List<Long> tagIds;
 
     private boolean exibirAoPublico;
+
+    private boolean featured;
 }
