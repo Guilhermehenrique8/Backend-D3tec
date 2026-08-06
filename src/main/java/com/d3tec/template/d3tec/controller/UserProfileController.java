@@ -33,9 +33,15 @@ public class UserProfileController {
         User user = userRepository.findById(usuarioPrincipal.getUserDto().getId())
                 .orElseThrow(() -> new IllegalStateException("Usuario nao encontrado"));
 
+        String role = user.getRoles().stream()
+                .findFirst()
+                .map(r -> r.getName())
+                .orElse("BASIC");
+
         return ResponseEntity.ok(new UserMeResponse(
                 user.getNome() != null ? user.getNome() : "Admin",
-                user.getEmail()
+                user.getEmail(),
+                role
         ));
     }
 
