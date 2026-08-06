@@ -76,7 +76,9 @@ public class SecurityConfig {
                             "/indicadores",
                             "/indicadores/**",
                             "/partners",
-                            "/partners/**"
+                            "/partners/**",
+                            "/members",
+                            "/members/**"
                     ).permitAll()
                     .requestMatchers(
                             "/v3/api-docs/**",

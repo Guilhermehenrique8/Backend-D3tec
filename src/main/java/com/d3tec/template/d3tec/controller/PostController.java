@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class PostController {
 
     /* Admin */
     @GetMapping("/admin/posts")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Listar todos os posts paginados (admin)")
     @Transactional(readOnly = true)
     public ResponseEntity<Page<Post>> listAll(Pageable pageable) {
@@ -55,6 +57,7 @@ public class PostController {
     }
 
     @GetMapping("/admin/posts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Buscar um post pelo id (admin)")
     @Transactional(readOnly = true)
     public ResponseEntity<Post> findById(@PathVariable Long id) {
@@ -64,18 +67,21 @@ public class PostController {
     }
 
     @PostMapping("/admin/posts")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Criar um novo post")
     public ResponseEntity<Post> create(@RequestBody @Valid PostRequest request) {
         return ResponseEntity.ok(postService.create(request));
     }
 
     @PutMapping("/admin/posts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Editar um post existente")
     public ResponseEntity<Post> update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
         return ResponseEntity.ok(postService.update(id, request));
     }
 
     @DeleteMapping("/admin/posts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Excluir um post")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         postService.delete(id);

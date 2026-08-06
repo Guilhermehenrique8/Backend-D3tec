@@ -1,0 +1,1 @@
+ALTER TABLE member ADD COLUMN IF NOT EXISTS exibir_ao_publico BOOLEAN NOT NULL DEFAULT false;
